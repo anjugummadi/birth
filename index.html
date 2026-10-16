@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Bestie 🎬💗</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --rose: #ff8fbe;
+  --rose-soft: #f5b8d7;
+  --deep: #100812;
+  --cream: #fff1f7;
+  --gold: #f7d9a8;
+}
+
+html, body { height: 100%; }
+
+body {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  background: var(--deep);
+  color: var(--cream);
+  overflow: hidden;
+  height: 100vh;
+  height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* =========================================================
+   FLOATING BACKGROUND HEARTS — canvas-free, JS-positioned
+   ========================================================= */
+#heartLayer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.bg-heart {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  user-select: none;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 0 10px rgba(255,120,180,.7));
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+
+/* ---------- SLIDE BASE ---------- */
+.slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 60px 24px 70px;
+  overflow-y: auto;
+  visibility: hidden;
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+  transition:
+    opacity 1s cubic-bezier(.4,0,.2,1),
+    transform 1.2s cubic-bezier(.4,0,.2,1),
+    visibility 1s;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(255,120,180,.20), transparent 65%),
+    radial-gradient(ellipse at 15% 85%, rgba(180,90,200,.18), transparent 55%),
+    radial-gradient(ellipse at 85% 15%, rgba(255,180,120,.10), transparent 55%),
+    linear-gradient(160deg, #100812 0%, #2a1226 50%, #100812 100%);
+  z-index: 2;
+}
+
+.slide::before,
+.slide::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+  opacity: .35;
+}
+.slide::before {
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, #ff6fb0, transparent 70%);
+  top: -120px; left: -120px;
+  animation: drift 18s ease-in-out infinite alternate;
+}
+.slide::after {
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, #a06bff, transparent 70%);
+  bottom: -150px; right: -150px;
+  animation: drift 22s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes drift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(60px, 40px); }
+}
+
+.slide.active {
+  visibility: visible;
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.content {
+  position: relative;
+  width: 100%;
+  max-width: 780px;
+  animation: reveal 1.3s cubic-bezier(.4,0,.2,1) both;
+  z-index: 2;
+}
+
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(28px); filter: blur(6px); }
+  to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+}
+
+/* ---------- TYPOGRAPHY ---------- */
+.kicker {
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  font-size: 10.5px;
+  font-weight: 400;
+  color: var(--rose);
+  margin-bottom: 28px;
+  opacity: .9;
+}
+.kicker::before,
+.kicker::after {
+  content: '·';
+  margin: 0 12px;
+  color: var(--rose-soft);
+  opacity: .6;
+}
+
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(46px, 10vw, 88px);
+  font-weight: 400;
+  line-height: 1.05;
+  color: #ffeaf3;
+  letter-spacing: -0.5px;
+  text-shadow:
+    0 0 45px rgba(255,116,180,.35),
+    0 0 90px rgba(255,116,180,.15);
+  margin-bottom: 26px;
+}
+h1 em {
+  font-style: italic;
+  color: var(--gold);
+  text-shadow: 0 0 40px rgba(247,217,168,.4);
+}
+
+h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 6.5vw, 54px);
+  font-weight: 400;
+  line-height: 1.15;
+  color: #ffd6e8;
+  margin-bottom: 24px;
+  letter-spacing: -0.3px;
+}
+h2 em { font-style: italic; color: var(--gold); }
+
+p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 2;
+  color: #ead8e5;
+  letter-spacing: .3px;
+}
+
+/* ---------- BUTTON ---------- */
+button {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, #b8477c, #5a2348);
+  border: 1px solid rgba(255,185,216,.5);
+  border-radius: 60px;
+  padding: 17px 34px;
+  margin-top: 34px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all .4s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 10px 30px -10px rgba(255,116,180,.5);
+}
+button::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+  transition: left .7s;
+}
+button:hover {
+  background: linear-gradient(135deg, #d75d94, #7a2e5c);
+  box-shadow: 0 0 35px rgba(255,143,190,.55);
+  transform: translateY(-3px);
+  border-color: rgba(255,185,216,.9);
+}
+button:hover::after { left: 100%; }
+button:active { transform: translateY(-1px); }
+
+/* ---------- DECOR ---------- */
+.decor {
+  font-size: 26px;
+  letter-spacing: 18px;
+  margin-bottom: 30px;
+  color: var(--rose);
+  animation: glow 3s ease-in-out infinite alternate;
+}
+@keyframes glow {
+  from { filter: drop-shadow(0 0 4px #ff7db7); opacity: .85; }
+  to   { filter: drop-shadow(0 0 22px #ff7db7); opacity: 1; }
+}
+
+/* ---------- PHOTO GALLERY ---------- */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 30px auto 0;
+  max-width: 620px;
+}
+.photo img {
+  display: block;
+  width: 100%;
+  height: clamp(130px, 26vh, 240px);
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid rgba(245,184,215,.35);
+  background: #321c30;
+  box-shadow:
+    0 18px 40px -20px rgba(0,0,0,.7),
+    0 0 0 1px rgba(255,255,255,.04) inset;
+  transition: transform .5s cubic-bezier(.4,0,.2,1), box-shadow .5s;
+}
+.photo img:hover {
+  transform: scale(1.04) translateY(-4px);
+  box-shadow:
+    0 26px 55px -22px rgba(255,116,180,.5),
+    0 0 0 1px rgba(255,185,216,.4) inset;
+}
+.photo p {
+  font-size: 10.5px;
+  margin-top: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #d4aec7;
+  font-weight: 400;
+}
+
+/* ---------- LETTER NOTE ---------- */
+.note {
+  max-width: 590px;
+  margin: auto;
+  padding: 38px 34px;
+  background: linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  border: 1px solid rgba(245,184,215,.30);
+  border-radius: 20px;
+  position: relative;
+  box-shadow:
+    0 30px 70px -35px rgba(255,116,180,.35),
+    0 0 0 1px rgba(255,255,255,.03) inset;
+  backdrop-filter: blur(8px);
+}
+.note::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(245,184,215,.15);
+  border-radius: 14px;
+  pointer-events: none;
+}
+.note p {
+  margin-bottom: 16px;
+  font-size: 14.5px;
+  line-height: 1.95;
+  text-align: left;
+  color: #f2e2ec;
+}
+.note p:first-of-type {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 22px;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 22px;
+  letter-spacing: .5px;
+}
+.note p strong { color: var(--rose); font-weight: 600; }
+
+/* ---------- FINALE ---------- */
+.bigcake {
+  font-size: 96px;
+  margin: 10px 0 24px;
+  display: inline-block;
+  animation: cakeGlow 2.5s ease-in-out infinite alternate, floatCake 4s ease-in-out infinite;
+}
+@keyframes cakeGlow {
+  from { filter: drop-shadow(0 0 6px #ff7db7); }
+  to   { filter: drop-shadow(0 0 32px #ff7db7); }
+}
+@keyframes floatCake {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+.final-heart {
+  font-size: 80px;
+  margin: 10px 0 22px;
+  display: inline-block;
+  animation: heartBeat 1.6s ease-in-out infinite;
+}
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.12); }
+  40% { transform: scale(0.98); }
+  60% { transform: scale(1.08); }
+}
+
+/* ---------- CONFETTI BURSTS (foreground) ---------- */
+.floating {
+  position: fixed;
+  top: -40px;
+  z-index: 50;
+  pointer-events: none;
+  animation: fall linear forwards;
+}
+@keyframes fall {
+  to {
+    transform: translateY(115vh) rotate(540deg);
+    opacity: 0;
+  }
+}
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 480px) {
+  .slide { padding: 50px 18px 65px; }
+  .gallery { gap: 8px; }
+  .photo img { height: 150px; border-radius: 10px; }
+  .photo p { font-size: 9px; letter-spacing: 1px; }
+  p { font-size: 13.5px; }
+  .note { padding: 26px 20px; }
+  .note p { font-size: 13.5px; }
+  .note p:first-of-type { font-size: 19px; }
+  .decor { font-size: 20px; letter-spacing: 12px; }
+  .bigcake { font-size: 72px; }
+  .final-heart { font-size: 60px; }
+  button { padding: 15px 26px; font-size: 10px; letter-spacing: 2.5px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #heartLayer { display: none; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- FLOATING BACKGROUND HEARTS -->
+<div id="heartLayer" aria-hidden="true"></div>
+
+<!-- SLIDE 1 -->
+<section class="slide active" id="slide1">
+  <div class="content">
+    <div class="decor">✦ ✧ ✦</div>
+    <p class="kicker">A little film made with love</p>
+    <h1>For My<br><em>Favorite Human</em></h1>
+    <p>Some people make life beautiful<br>just by being part of it. 💗</p>
+    <button onclick="nextSlide()">Begin Our Story ✨</button>
+  </div>
+</section>
+
+<!-- SLIDE 2 -->
+<section class="slide" id="slide2">
+  <div class="content">
+    <div class="decor">🎀 💗 🎀</div>
+    <p class="kicker">Scene One · A Special Day</p>
+    <h1>Happy<br><em>Birthday!</em></h1>
+    <p>Today, the spotlight belongs to you.<br>May your world be filled with love,<br>laughter and beautiful memories. 🌷</p>
+    <button onclick="nextSlide()">Continue the Story ✨</button>
+  </div>
+</section>
+
+<!-- SLIDE 3 -->
+<section class="slide" id="slide3">
+  <div class="content">
+    <p class="kicker">Scene Two · Our Story</p>
+    <h2>Little Moments,<br>Big Memories 📸</h2>
+    <p>Some moments deserve to be replayed forever.</p>
+    <div class="gallery">
+      <div class="photo"><img src="photo1.jpeg" alt="Memory 1"><p>Favorite moment 🌸</p></div>
+      <div class="photo"><img src="photo2.jpeg" alt="Memory 2"><p>Our madness 😂</p></div>
+      <div class="photo"><img src="photo3.jpeg" alt=Memory 3"><p>Forever memories 💗</p></div>
+    </div>
+    <button onclick="nextSlide()">A Little Message 💌</button>
+  </div>
+</section>
+
+<!-- SLIDE 4 -->
+<section class="slide" id="slide4">
+  <div class="content">
+    <p class="kicker">Scene Three · From My Heart</p>
+    <h2>A Letter for You 💌</h2>
+    <div class="note">
+      <p>Dear Bestie, 💗</p>
+      <p>Happy Birthday to one of the most special people in my life.</p>
+      <p>Thank you for the laughs, the conversations, the silly moments and the memories that make ordinary days extraordinary.</p>
+      <p>I hope this year brings you happiness, confidence, exciting opportunities and countless reasons to smile.</p>
+      <p>Here's to more adventures, more laughter and a friendship filled with beautiful memories.</p>
+      <p><strong>Always keep shining. 🌷</strong></p>
+    </div>
+    <button onclick="nextSlide()">One Last Surprise 🎁</button>
+  </div>
+</section>
+
+<!-- SLIDE 5 -->
+<section class="slide" id="slide5">
+  <div class="content">
+    <p class="kicker">Final Scene · Make a Wish</p>
+    <div class="bigcake">🎂</div>
+    <h1>Make a <em>Wish!</em></h1>
+    <p>A new chapter.<br>A thousand new memories.<br>So many reasons to smile. ✨</p>
+    <button onclick="revealSurprise()">Reveal Your Surprise 💗</button>
+  </div>
+</section>
+
+<!-- SLIDE 6 -->
+<section class="slide" id="slide6">
+  <div class="content">
+    <div class="final-heart">💖</div>
+    <p class="kicker">The Surprise · For You</p>
+    <h1>Happy Birthday,<br><em>Bestie!</em> 🎉</h1>
+    <p>You deserve all the wonderful things<br>this world has to offer.<br>This is not the end of our story...<br>it's another beautiful beginning. 💕</p>
+    <button onclick="goToSlide(1)">Watch Again ↺</button>
+  </div>
+</section>
+
+<script>
+/* =========================================================
+   1. CONTINUOUS FLOATING HEARTS (JS-driven, bulletproof)
+   =========================================================
+   Each heart is a <span> positioned absolutely. Every frame
+   the requestAnimationFrame loop updates its x, y, rotation,
+   and opacity. When a heart floats off the top of the
+   screen, it recycles to the bottom with fresh random
+   properties. This runs forever, independent of slides.
+*/
+(function initFloatingHearts() {
+  const layer = document.getElementById("heartLayer");
+  const symbols = ["💗", "💕", "💖", "💞", "❤️", "🌸", "💝"];
+  const hearts = [];
+
+  const isMobile = window.innerWidth < 600;
+  const COUNT = isMobile ? 14 : 22;
+
+  function rand(min, max) { return Math.random() * (max - min) + min; }
+
+  function createHeart() {
+    const el = document.createElement("span");
+    el.className = "bg-heart";
+    el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+
+    const size = rand(16, 44);
+    el.style.fontSize = size + "px";
+
+    const heart = {
+      el,
+      x: rand(0, window.innerWidth),
+      y: rand(window.innerHeight, window.innerHeight * 2), // start below screen
+      size,
+      speed: rand(30, 80),          // px per second upward
+      drift: rand(-40, 40),          // px per second sideways
+      driftPhase: rand(0, Math.PI * 2),
+      rot: rand(0, 360),
+      rotSpeed: rand(-30, 30),       // degrees per second
+      peakOpacity: rand(0.35, 0.8),
+      maxLife: Infinity
+    };
+
+    layer.appendChild(el);
+    hearts.push(heart);
+  }
+
+  // Initial batch — spread already up the screen so it looks full at load
+  for (let i = 0; i < COUNT; i++) {
+    createHeart();
+    const h = hearts[hearts.length - 1];
+    // Pre-scatter along the vertical path
+    h.y = rand(-window.innerHeight * 0.2, window.innerHeight);
+  }
+
+  // Track time
+  let last = performance.now();
+
+  function loop(now) {
+    const dt = Math.min((now - last) / 1000, 0.05); // seconds, capped
+    last = now;
+
+    const H = window.innerHeight;
+    const W = window.innerWidth;
+
+    for (let i = 0; i < hearts.length; i++) {
+      const h = hearts[i];
+
+      // Move upward and drift sideways smoothly
+      h.y -= h.speed * dt;
+      h.driftPhase += dt * 1.2;
+      h.x += (h.drift + Math.sin(h.driftPhase) * 25) * dt;
+      h.rot += h.rotSpeed * dt;
+
+      // Recycle when off the top
+      if (h.y < -80) {
+        h.y = H + rand(20, 120);
+        h.x = rand(0, W);
+        h.speed = rand(30, 80);
+        h.drift = rand(-40, 40);
+        h.driftPhase = rand(0, Math.PI * 2);
+        h.rot = rand(0, 360);
+        h.rotSpeed = rand(-30, 30);
+        h.peakOpacity = rand(0.35, 0.8);
+        h.el.style.fontSize = rand(16, 44) + "px";
+        h.el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      }
+
+      // Keep horizontal position in range with wrap
+      if (h.x < -60) h.x = W + 60;
+      if (h.x > W + 60) h.x = -60;
+
+      // Fade in near bottom, fade out near top
+      const fadeIn = Math.min(1, Math.max(0, (H - h.y) / 120)); // only fades while below H
+      const fadeOut = Math.min(1, Math.max(0, (h.y + 60) / 200));
+      const opacity = Math.min(fadeIn, fadeOut) * h.peakOpacity;
+
+      h.el.style.transform =
+        `translate3d(${h.x}px, ${h.y}px, 0) rotate(${h.rot}deg)`;
+      h.el.style.opacity = opacity.toFixed(3);
+    }
+
+    requestAnimationFrame(loop);
+  }
+
+  requestAnimationFrame(loop);
+
+  // Handle resize
+  window.addEventListener("resize", () => {
+    // Nothing critical — positions will adapt naturally
+  });
+
+  // Pause when tab hidden (saves CPU)
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) last = performance.now();
+  });
+})();
+
+/* =========================================================
+   2. SLIDE NAVIGATION
+   ========================================================= */
+let currentSlide = 1;
+const totalSlides = 6;
+let isAnimating = false;
+
+function updateSlide() {
+  document.querySelectorAll(".slide").forEach((slide, index) => {
+    slide.classList.toggle("active", index + 1 === currentSlide);
+  });
+  isAnimating = true;
+  setTimeout(() => { isAnimating = false; }, 1000);
+}
+
+function goToSlide(n) {
+  currentSlide = Math.max(1, Math.min(totalSlides, n));
+  updateSlide();
+}
+
+function nextSlide() {
+  if (isAnimating) return;
+  if (currentSlide < totalSlides) {
+    currentSlide++;
+    updateSlide();
+  }
+}
+
+function previousSlide() {
+  if (isAnimating) return;
+  if (currentSlide > 1) {
+    currentSlide--;
+    updateSlide();
+  }
+}
+
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); nextSlide(); }
+  if (e.key === "ArrowLeft") previousSlide();
+});
+
+let touchStartX = 0, touchStartY = 0;
+document.addEventListener("touchstart", e => {
+  touchStartX = e.changedTouches[0].screenX;
+  touchStartY = e.changedTouches[0].screenY;
+}, { passive: true });
+
+document.addEventListener("touchend", e => {
+  const dx = e.changedTouches[0].screenX - touchStartX;
+  const dy = e.changedTouches[0].screenY - touchStartY;
+  if (Math.abs(dx) > 65 && Math.abs(dx) > Math.abs(dy)) {
+    if (dx < 0) nextSlide();
+    else previousSlide();
+  }
+}, { passive: true });
+
+/* =========================================================
+   3. SURPRISE REVEAL
+   ========================================================= */
+function revealSurprise() {
+  if (isAnimating) return;
+  currentSlide = 6;
+  updateSlide();
+  setTimeout(() => { softBurst(55, true); hardBurst(60); }, 300);
+}
+
+/* =========================================================
+   4. CONFETTI BURSTS
+   ========================================================= */
+function softBurst(count, big = false) {
+  const decorations = ["💗", "💕", "🌸", "✨", "🎉", "🎀", "💖", "🌷"];
+  for (let i = 0; i < count; i++) {
+    const item = document.createElement("span");
+    item.className = "floating";
+    item.textContent = decorations[Math.floor(Math.random() * decorations.length)];
+    item.style.left = Math.random() * 100 + "vw";
+    item.style.fontSize = (big ? 22 : 16) + Math.random() * (big ? 24 : 20) + "px";
+    item.style.animationDuration = (3 + Math.random() * 3.5) + "s";
+    item.style.opacity = 0.7 + Math.random() * 0.3;
+    document.body.appendChild(item);
+    setTimeout(() => item.remove(), 7000);
+  }
+}
+
+function hardBurst(count) {
+  const symbols = ["✨", "💗", "💫", "🌸", "🎉"];
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight / 2;
+
+  for (let i = 0; i < count; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 120 + Math.random() * 280;
+
+    const item = document.createElement("span");
+    item.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    item.style.position = "fixed";
+    item.style.left = cx + "px";
+    item.style.top = cy + "px";
+    item.style.fontSize = (14 + Math.random() * 16) + "px";
+    item.style.pointerEvents = "none";
+    item.style.zIndex = 60;
+    item.style.transition = "transform 1.7s cubic-bezier(.2,.6,.3,1), opacity 1.7s ease";
+    item.style.willChange = "transform, opacity";
+    document.body.appendChild(item);
+
+    requestAnimationFrame(() => {
+      const dx = Math.cos(angle) * distance;
+      const dy = Math.sin(angle) * distance;
+      item.style.transform = `translate(${dx}px, ${dy}px) scale(0.4) rotate(${Math.random()*360}deg)`;
+      item.style.opacity = "0";
+    });
+    setTimeout(() => item.remove(), 1900);
+  }
+}
+</script>
+
+</body>
+</html>
